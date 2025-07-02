@@ -18,10 +18,35 @@
             const handleForgotPassword = () => setIsForgotPassword(true);
             const handleRememberedPassword = () => setIsForgotPassword(false);
 
-            const handleLoginSubmit = (e) => {
-                e.preventDefault();
-                alert('Login submitted: ' + username + ', ' + password);
-            };
+
+    const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+    const response = await fetch("/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.redirect) {
+        window.location.href = data.redirect;
+    } else {
+        alert(data.message || "Login failed");
+    }
+};
+
+
 
             const handleForgotSubmit = (e) => {
                 e.preventDefault();
@@ -116,16 +141,9 @@
                                     </button>
                                 </div>
 
-                                <div className="text-center mt-4">
-                                  <p className="text-gray-600">
-            Don't have an account?{' '}
-            <a href="/register" className="text-blue-500 hover:underline">
-                Register here
-            </a>
-        </p>
-    </div>
+                                
 
-                
+
                             </form>
                         )}
                     </div>

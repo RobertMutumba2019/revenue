@@ -6,12 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>@yield('title', 'SUNEF')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    
+
     <!-- External CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet">
-    
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js"></script>
