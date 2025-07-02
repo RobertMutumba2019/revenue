@@ -10,17 +10,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --primary: #1d4ed8;       /* Blue-700 */
-            --primary-dark: #1e3a8a;  /* Blue-900 */
-            --accent: #06b6d4;        /* Cyan-500 */
-            --sidebar-bg: #0f172a;     /* Slate-900 */
-            --sidebar-hover: #1e293b;  /* Slate-800 */
-            --sidebar-active: #293548; /* Slate-700 */
-            --sidebar-text: #e2e8f0;   /* Slate-200 */
-            --sidebar-icon: #94a3b8;   /* Slate-400 */
-            --badge-bg: #ef4444;      /* Red-500 */
-            --card-bg: #ffffff;       /* White */
-            --body-bg: #f1f5f9;       /* Slate-100 */
+            --primary: #1d4ed8;
+            --primary-dark: #1e3a8a;
+            --accent: #06b6d4;
+            --sidebar-bg: #0f172a;
+            --sidebar-hover: #1e293b;
+            --sidebar-active: #293548;
+            --sidebar-text: #e2e8f0;
+            --sidebar-icon: #94a3b8;
+            --badge-bg: #ef4444;
+            --card-bg: #ffffff;
+            --body-bg: #f1f5f9;
         }
 
         body {
@@ -219,19 +219,33 @@
         }
 
         .submenu {
-            display: none;
+            max-height: 0;
+            overflow: hidden;
             background: rgba(0, 0, 0, 0.15);
             padding-left: 24px;
+            transition: max-height 0.3s ease;
         }
 
-        details[open] .submenu {
-            display: block;
+        .menu-item.open .submenu {
+            max-height: 500px;
         }
 
         .submenu .menu-link {
             padding: 10px 24px;
             font-size: 0.9rem;
             font-weight: 400;
+        }
+
+        .menu-toggle::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item.open .menu-toggle::after {
+            transform: rotate(180deg);
         }
 
         .sidebar-footer {
@@ -326,7 +340,7 @@
                 <div class="user-name">John Doe</div>
                 <div class="user-role">Administrator</div>
             </div>
-            <a href="users/logout" class="logout-btn" onclick="return confirm('Are you sure you want to logout?');">
+            <a href="#" class="logout-btn" onclick="return confirm('Are you sure you want to logout?');">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
         </div>
@@ -334,129 +348,114 @@
 
     <aside class="sidebar">
         <div class="sidebar-menu">
-            <div class="menu-title">Main Navigation</div>
+            <div class="menu-title">MAIN NAVIGATION</div>
             <div class="menu-item">
                 <a href="#" class="menu-link active">
                     <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
+                    <span>Home</span>
                 </a>
             </div>
+
             <div class="menu-item">
-                <details>
-                    <summary class="menu-link">
-                        <i class="fas fa-users"></i>
-                        <span>User Management</span>
-                    </summary>
-                    <div class="submenu">
-                        <a href="#" class="menu-link">
-                            <i class="fas fa-user-plus"></i>
-                            <span>Add User</span>
-                        </a>
-                        <a href="#" class="menu-link">
-                            <i class="fas fa-list"></i>
-                            <span>View Users</span>
-                        </a>
-                    </div>
-                </details>
+                <a href="#" class="menu-link menu-toggle">
+                    <i class="fas fa-user"></i>
+                    <span>Users</span>
+                </a>
+                <div class="submenu">
+                    <a href="#" class="menu-link">Add User</a>
+                    <a href="#" class="menu-link">All Users</a>
+                    <a href="#" class="menu-link">Change Password</a>
+                </div>
             </div>
-            <div class="menu-title">EFRIS Integration</div>
+
             <div class="menu-item">
                 <a href="#" class="menu-link">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Validate TIN</span>
+                    <i class="fas fa-building"></i>
+                    <span>User Rights & Privileges</span>
                 </a>
             </div>
+
             <div class="menu-item">
-                <details>
-                    <summary class="menu-link">
-                        <i class="fas fa-file-invoice"></i>
-                        <span>EFRIS Invoices</span>
-                        <span class="menu-badge">12</span>
-                    </summary>
-                    <div class="submenu">
-                        <a href="#" class="menu-link">
-                            <i class="fas fa-plus"></i>
-                            <span>Create Invoice</span>
-                        </a>
-                        <a href="#" class="menu-link">
-                            <i class="fas fa-list-ul"></i>
-                            <span>View Invoices</span>
-                        </a>
-                    </div>
-                </details>
+                <a href="#" class="menu-link menu-toggle">
+                    <i class="fas fa-user-circle"></i>
+                    <span>User Role</span>
+                </a>
+                <div class="submenu">
+                    <a href="#" class="menu-link">Add Role</a>
+                    <a href="#" class="menu-link">View Roles</a>
+                </div>
             </div>
+
+            <div class="menu-item" style="display:none;">
+                <a href="#" class="menu-link menu-toggle">
+                    <i class="fas fa-cog"></i>
+                    <span>Change Log</span>
+                </a>
+                <div class="submenu">
+                    <a href="#" class="menu-link">Log Entry 1</a>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <a href="#" class="menu-link menu-toggle">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>EFris Modules</span>
+                </a>
+                <div class="submenu">
+                    <a href="#" class="menu-link">EFRis Error Log</a>
+                    <a href="#" class="menu-link">EFRis Stock</a>
+                    <a href="#" class="menu-link">Goods Upload</a>
+                </div>
+            </div>
+
+            <div class="menu-item" style="display:none;">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-money-bill"></i>
+                    <span>Payment Information</span>
+                </a>
+            </div>
+
+            <div class="menu-item" style="display:none;">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-file-text"></i>
+                    <span>Other Invoices</span>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="#" class="menu-link menu-toggle">
+                    <i class="fas fa-table"></i>
+                    <span>Commodity Code</span>
+                </a>
+                <div class="submenu">
+                    <a href="#" class="menu-link">Item A</a>
+                    <a href="#" class="menu-link">Item B</a>
+                </div>
+            </div>
+
             <div class="menu-item">
                 <a href="#" class="menu-link">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>Error Log</span>
-                    <span class="menu-badge">5</span>
+                    <i class="fas fa-book"></i>
+                    <span>Dictionary</span>
                 </a>
             </div>
-            <div class="menu-title">Inventory Management</div>
-            <div class="menu-item">
-                <details>
-                    <summary class="menu-link">
-                        <i class="fas fa-boxes"></i>
-                        <span>Stock Management</span>
-                        <span class="menu-badge">3</span>
-                    </summary>
-                    <div class="submenu">
-                        <a href="#" class="menu-link">
-                            <i class="fas fa-plus"></i>
-                            <span>Add Stock</span>
-                        </a>
-                        <a href="#" class="menu-link">
-                            <i class="fas fa-eye"></i>
-                            <span>View Stock</span>
-                        </a>
-                    </div>
-                </details>
-            </div>
-            <div class="menu-item">
-                <details>
-                    <summary class="menu-link">
-                        <i class="fas fa-upload"></i>
-                        <span>Goods Upload</span>
-                        <span class="menu-badge">2</span>
-                    </summary>
-                    <div class="submenu">
-                        <a href="#" class="menu-link">
-                            <i class="fas fa-file-upload"></i>
-                            <span>Upload Goods</span>
-                        </a>
-                        <a href="#" class="menu-link">
-                            <i class="fas fa-list"></i>
-                            <span>View Goods</span>
-                        </a>
-                    </div>
-                </details>
-            </div>
-            <div class="menu-title">System Configuration</div>
-            <div class="menu-item">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Access Rights</span>
-                </a>
-            </div>
+
             <div class="menu-item">
                 <a href="#" class="menu-link">
                     <i class="fas fa-history"></i>
                     <span>Audit Trail</span>
                 </a>
             </div>
+
             <div class="menu-item">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
+                <a href="#" class="menu-link" onclick="return confirm('Do you intend to logout?');">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
                 </a>
             </div>
-        </div>
-        <div class="sidebar-footer">
-            <div class="copyright">
-                © 2025 <a href="#">FLAXEM</a>
-            </div>
-            <div class="version">
-                v1.4.0
+
+            <div class="sidebar-footer">
+                <p>SUNEF © 2025 | <a href="#">Support</a></p>
             </div>
         </div>
     </aside>
@@ -544,6 +543,15 @@
         document.querySelector('.navbar-toggle').addEventListener('click', function(e) {
             e.preventDefault();
             document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        // Toggle submenu
+        document.querySelectorAll('.menu-toggle').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                parent.classList.toggle('open');
+            });
         });
     </script>
 </body>

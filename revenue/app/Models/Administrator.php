@@ -12,3 +12,11 @@ class Administrator extends Model
     protected $fillable = ['admin_name', 'password'];
 }
 
+
+// use Illuminate\Support\Facades\Hash;
+// use App\Models\Administrator;
+
+// Administrator::create([
+//     'admin_name' => 'mr',
+//     'password' => Hash::make('Mut@2019#'),  // Replace with your desired password
+// ]);
