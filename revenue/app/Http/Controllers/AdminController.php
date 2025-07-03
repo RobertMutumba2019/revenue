@@ -101,15 +101,15 @@ class AdminController extends Controller
         return view('welcome');
     }
 
-
+   
+    // logout method
     public function logout(Request $request)
-    {
-        Session::flush(); // Clear all session data
-        $request->session()->regenerate(); // Regenerate session ID for security
-        return redirect('/'); // Redirect to login page
-    }
+{
+    Session::flush(); // Clear all session data
+    $request->session()->regenerate(); // Prevent session fixation
+    return redirect('/'); // Send back to login page
+}
 
-  
   
 public function sendResetLink(Request $request)
 {
@@ -170,6 +170,33 @@ public function sendResetLink(Request $request)
 
     return redirect('/')->with('message', 'Password reset successfully. You can now log in.');
 }
+
+//displays the username too.
+// public function showResetForm(Request $request)
+// {
+//     $token = $request->query('token');
+//     $email = $request->query('email');
+
+//     if (!$token || !$email) {
+//         return redirect('/')->withErrors('Invalid password reset link.');
+//     }
+
+//     // Find the user by email
+//     $user = SysUser::where('email', $email)->first();
+
+//     if (!$user) {
+//         return redirect('/')->withErrors('User not found.');
+//     }
+
+//     // Optionally, you can verify the token exists and is not expired here (recommended)
+
+//     return view('reset-password', [
+//         'token' => $token,
+//         'email' => $email,
+//         'username' => $user->username,
+//     ]);
+// }
+
 
 
 }

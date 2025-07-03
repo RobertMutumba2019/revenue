@@ -667,9 +667,23 @@
         <a href="#" >
             <span class="icon"><i class="fas fa-cogs"></i></span> Settings
         </a>
-        <a href="#">
-            <span class="icon"><i class="fas fa-sign-out-alt"></i></span> Logout
-        </a>
+        
+        {{-- log out --}}
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+             @csrf
+           </form>
+
+        <div class="menu-item">
+        <a href="#" class="menu-link"
+            onclick="event.preventDefault(); 
+                if (confirm('Do you intend to logout?')) {
+                    document.getElementById('logout-form').submit();
+                }">
+            <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+    </a>
+</div>
+        
     </aside>
     <main class="main-content">
         @yield('content')
