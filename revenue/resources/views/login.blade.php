@@ -1,4 +1,3 @@
-<!-- resources/views/login.blade.php -->
 @extends('layouts.app')
 
 @section('title', 'Login - SUNEF')
@@ -8,77 +7,101 @@
 @endsection
 
 @section('scripts')
+    <!-- Toastify CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
     <script type="text/babel">
         function LoginPage() {
             const [isForgotPassword, setIsForgotPassword] = React.useState(false);
             const [email, setEmail] = React.useState('');
             const [username, setUsername] = React.useState('');
             const [password, setPassword] = React.useState('');
+            const [loginError, setLoginError] = React.useState('');
+            const [forgotError, setForgotError] = React.useState('');
 
-            const handleForgotPassword = () => setIsForgotPassword(true);
-            const handleRememberedPassword = () => setIsForgotPassword(false);
+            const handleForgotPassword = () => {
+                setIsForgotPassword(true);
+                setForgotError('');
+                setLoginError('');
+            };
 
+            const handleRememberedPassword = () => {
+                setIsForgotPassword(false);
+                setForgotError('');
+                setLoginError('');
+            };
 
-    const handleLoginSubmit = async (e) => {
-    e.preventDefault();
+            function showToast(message, type = "success") {
+                Toastify({
+                    text: message,
+                    duration: 4000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: type === "success" ? "#28a745" : "#dc3545",
+                    stopOnFocus: true
+                }).showToast();
+            }
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+            const handleLoginSubmit = async (e) => {
+                e.preventDefault();
+                setLoginError('');
 
-    const response = await fetch("/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": csrfToken,
-            "Accept": "application/json"
-        },
-        body: JSON.stringify({
-            username: username,
-            password: password
-        })
-    });
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-    const data = await response.json();
+                try {
+                    const response = await fetch("/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken,
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
 
-    if (response.ok && data.redirect) {
-        window.location.href = data.redirect;
-    } else {
-        alert(data.message || "Login failed");
-    }
-};
+                    const data = await response.json();
 
+                    if (response.ok && data.redirect) {
+                        showToast("Login successful", "success");
+                        window.location.href = data.redirect;
+                    } else {
+                        setLoginError(data.message || "Login failed");
+                    }
+                } catch (error) {
+                    setLoginError("Something went wrong.");
+                }
+            };
 
-    //Handles request token.
-    const handleForgotSubmit = async (e) => {
-    e.preventDefault();
+            const handleForgotSubmit = async (e) => {
+                e.preventDefault();
+                setForgotError('');
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-    const response = await fetch("/forgot-password", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": csrfToken,
-            "Accept": "application/json"
-        },
-        body: JSON.stringify({
-            email: email
-        })
-    });
+                try {
+                    const response = await fetch("/forgot-password", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken,
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({ email })
+                    });
 
-    const data = await response.json();
+                    const data = await response.json();
 
-    if (response.ok) {
-        alert(data.message); // Success message from Laravel
-        setIsForgotPassword(false); // Return to login form
-    } else {
-        alert(data.message || "Failed to send reset link");
-    }
-};
-
-
-            React.useEffect(() => {
-                $('.select2, .select3, .select4').select2();
-            }, []);
+                    if (response.ok) {
+                        showToast(data.message, "success");
+                        setIsForgotPassword(false);
+                    } else {
+                        setForgotError(data.message || "Failed to send reset link");
+                    }
+                } catch (error) {
+                    setForgotError("Something went wrong.");
+                }
+            };
 
             return (
                 <div className="login-box flex items-center justify-center min-h-screen px-4">
@@ -91,23 +114,29 @@
                                 {isForgotPassword ? 'Forgot Password?' : 'Sign In'}
                             </h5>
                         </div>
+
                         {isForgotPassword ? (
                             <form onSubmit={handleForgotSubmit} className="space-y-6">
                                 <div className="input-group flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                                    <span className="input-group-addon">
-                                        <i className="fas fa-user text-gray-500"></i>
+                                    <span className="input-group-addon px-3">
+                                        <i className="fas fa-envelope text-gray-500"></i>
                                     </span>
                                     <div className="form-line flex-1">
                                         <input
-                                            type="text"
+                                            type="email"
                                             className="form-control w-full p-3 text-gray-700 focus:outline-none"
-                                            placeholder="Enter Your Username"
+                                            placeholder="Enter Your Email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             autoFocus
                                         />
                                     </div>
                                 </div>
+                                {forgotError && (
+                                    <div className="text-red-600 text-sm text-center font-semibold">
+                                        {forgotError}
+                                    </div>
+                                )}
                                 <button type="submit"
                                         className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
                                     <i className="fas fa-paper-plane"></i> Send
@@ -124,7 +153,7 @@
                             <form onSubmit={handleLoginSubmit} className="space-y-6">
                                 <img src="/images/sunef.png" alt="SUNEF Logo" className="w-full mb-6" />
                                 <div className="input-group flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                                    <span className="input-group-addon">
+                                    <span className="input-group-addon px-3">
                                         <i className="fas fa-user text-gray-500"></i>
                                     </span>
                                     <div className="form-line flex-1">
@@ -139,7 +168,7 @@
                                     </div>
                                 </div>
                                 <div className="input-group flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                                    <span className="input-group-addon">
+                                    <span className="input-group-addon px-3">
                                         <i className="fas fa-lock text-gray-500"></i>
                                     </span>
                                     <div className="form-line flex-1">
@@ -152,6 +181,11 @@
                                         />
                                     </div>
                                 </div>
+                                {loginError && (
+                                    <div className="text-red-600 text-sm text-center font-semibold">
+                                        {loginError}
+                                    </div>
+                                )}
                                 <button type="submit"
                                         className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2">
                                     SIGN IN
@@ -163,8 +197,6 @@
                                         Forgot Password <i className="fas fa-question-circle"></i>
                                     </button>
                                 </div>
-
-
                             </form>
                         )}
                     </div>
@@ -175,3 +207,4 @@
         ReactDOM.render(<LoginPage />, document.getElementById('root'));
     </script>
 @endsection
+
