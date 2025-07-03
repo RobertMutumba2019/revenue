@@ -24,7 +24,7 @@
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-    const response = await fetch("/", {
+    const response = await fetch("/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -47,11 +47,34 @@
 };
 
 
+    //Handles request token.
+    const handleForgotSubmit = async (e) => {
+    e.preventDefault();
 
-            const handleForgotSubmit = (e) => {
-                e.preventDefault();
-                alert('Password reset request sent for: ' + email);
-            };
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+    const response = await fetch("/forgot-password", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            email: email
+        })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        alert(data.message); // Success message from Laravel
+        setIsForgotPassword(false); // Return to login form
+    } else {
+        alert(data.message || "Failed to send reset link");
+    }
+};
+
 
             React.useEffect(() => {
                 $('.select2, .select3, .select4').select2();
@@ -140,8 +163,6 @@
                                         Forgot Password <i className="fas fa-question-circle"></i>
                                     </button>
                                 </div>
-
-                                
 
 
                             </form>

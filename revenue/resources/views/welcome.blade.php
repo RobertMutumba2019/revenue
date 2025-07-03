@@ -447,12 +447,21 @@
                 </a>
             </div>
 
-            <div class="menu-item">
-                <a href="#" class="menu-link" onclick="return confirm('Do you intend to logout?');">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
+            {{-- log out --}}
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+             @csrf
+           </form>
+
+<div class="menu-item">
+    <a href="#" class="menu-link"
+       onclick="event.preventDefault(); 
+                if (confirm('Do you intend to logout?')) {
+                    document.getElementById('logout-form').submit();
+                }">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+    </a>
+</div>
 
             <div class="sidebar-footer">
                 <p>SUNEF © 2025 | <a href="#">Support</a></p>

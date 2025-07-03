@@ -5,16 +5,16 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SysUserController;
 
-Route::get('/', [AdminController::class, 'showLoginForm'])->name('login');  // Login page (GET /)
-Route::post('/', [AdminController::class, 'login']);                       // Login submission (POST /)
-Route::get('/admind', [AdminController::class, 'adminDashboard']);         // Admin dashboard page (GET /admind)
 
 
+Route::get('/', [AdminController::class, 'showLoginForm'])->name('login');    // Login page (GET /)
+Route::post('/login', [AdminController::class, 'login']);                    // Login submission (POST /login) - Changed from '/' to '/login' for clarity and best practice
+Route::post('/logout', [AdminController::class, 'logout'])->name('logout'); // New logout route
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
+// Admin Dashboard Route (protected)
+Route::get('/admind', [AdminController::class, 'adminDashboard'])->name('admind');
 
+Route::get('/welcome', [AdminController::class, 'welcomePage'])->name('welcome');
 
 
 Route::get('/sysuser/create', [SysUserController::class, 'create'])->name('sysuser.create');
@@ -24,6 +24,16 @@ Route::post('/sysuser/create', [SysUserController::class, 'store'])->name('sysus
 Route::get('/user', [UserController::class, 'create']);
 Route::get('/viewa', [SysUserController::class, 'viewa'])->name('viewa');
 Route::post('/sysuser/delete', [SysUserController::class, 'destroy'])->name('destroy');
+
+Route::post('/forgot-password', [AdminController::class, 'sendResetLink'])->name('forgot.password');
+Route::get('/reset-password', function () {
+    return view('reset');
+});
+Route::post('/reset-password', [AdminController::class, 'resetPassword']);
+
+
+
+
 
 
 
