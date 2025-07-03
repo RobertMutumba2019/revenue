@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\SysUser;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail; // Import the Mail facade
+use App\Mail\WelcomeEmail; // Import your new Mailable class
+use Illuminate\Support\Facades\Log; // Import the Log facade - FIX for "undefined type Log"
 
 class SysUserController extends Controller
 {
@@ -38,7 +41,7 @@ class SysUserController extends Controller
         $username = $surnameFirst . $othernameFirst . '1' . $randomDigits;
 
         // Generate random password (12 chars, mixed)
-        $passwordPlain = Str::random(12);
+        $passwordPlain = Str::random(8);
 
         // Create new user
         $user = SysUser::create([
@@ -53,11 +56,21 @@ class SysUserController extends Controller
             'password' => Hash::make($passwordPlain),
         ]);
 
-        // Optionally, return password so you can display/send to user:
-        return redirect()->back()->with('success', "User created successfully! Username: $username Password: $passwordPlain");
+        // Send email with credentials
+        try {
+            Mail::to($request->email)->send(new WelcomeEmail($username, $passwordPlain));
+            $message = "User created successfully and credentials sent to email!";
+        } catch (\Exception $e) {
+            // Log the error if email sending fails
+            Log::error("Failed to send new user credentials email to {$request->email}: " . $e->getMessage());
+            $message = "User created successfully, but failed to send credentials email. Please provide credentials manually.";
+        }
+
+        return redirect()->back()->with('success', $message);
     }
 
-  
+
+
 
 public function viewa(Request $request)
 {
