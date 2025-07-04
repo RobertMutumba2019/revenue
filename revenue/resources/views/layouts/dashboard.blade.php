@@ -630,7 +630,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar" aria-label="Main navigation">
+    {{-- <nav class="navbar" aria-label="Main navigation">
         <button class="navbar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
             <i class="fas fa-bars"></i>
         </button>
@@ -650,7 +650,38 @@
                 <a href="/logout" onclick="return confirm('Are you sure you want to logout?');"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
-    </nav>
+    </nav> --}}
+
+    <nav class="navbar" aria-label="Main navigation">
+    <button class="navbar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+    </button>
+    <a href="/admind" class="navbar-brand">
+        <img src="{{ asset('images/sunef.png') }}" alt="SUNEF Logo" onerror="this.src='https://via.placeholder.com/36?text=Logo'">
+        <span>SUNEF - EFRIS Integrator</span>
+    </a>
+
+    @if(Session::has('user_logged_in') || Session::has('admin_logged_in'))
+        <div class="user-profile">
+            @php
+                $name = Session::get('user_name') ?? 'Admin';
+                $role = Session::get('user_type') === 'admin' ? 'Administrator' : (Session::get('user_department') ?? 'User');
+                $initials = strtoupper(substr($name, 0, 1)); // First letter
+            @endphp
+            <div class="user-avatar" aria-haspopup="true" aria-expanded="false">{{ $initials }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ $name }}</div>
+                <div class="user-role">{{ $role }}</div>
+            </div>
+            <div class="user-dropdown" aria-label="User menu">
+                <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+                <a href="/change-password"><i class="fas fa-key"></i> Change Password</a>
+                <a href="/logout" onclick="return confirm('Are you sure you want to logout?');"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    @endif
+</nav>
+
     <aside class="sidebar" aria-label="Sidebar navigation">
         <a href="/admind" class="@if(Route::is('admind')) active @endif">
             <span class="icon"><i class="fas fa-tachometer-alt"></i></span> Dashboard

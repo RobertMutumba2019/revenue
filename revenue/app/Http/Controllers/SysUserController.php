@@ -37,7 +37,7 @@ class SysUserController extends Controller
         // Generate username: first letter surname + first letter othername + 1 + 4 random digits
         $surnameFirst = strtolower(substr($request->surname, 0, 1));
         $othernameFirst = strtolower(substr($request->othername ?? '', 0, 1));
-        $randomDigits = mt_rand(1000, 9999);
+        $randomDigits = mt_rand(100, 999);
         $username = $surnameFirst . $othernameFirst . '1' . $randomDigits;
 
         // Generate random password (12 chars, mixed)
@@ -69,12 +69,9 @@ class SysUserController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
-
-
-
 public function viewa(Request $request)
 {
-    
+
     $query = SysUser::query();
 
     // If search query provided, filter by surname or othername or email or phone

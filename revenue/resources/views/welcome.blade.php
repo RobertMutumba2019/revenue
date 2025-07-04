@@ -326,25 +326,32 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <button class="navbar-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <a href="#" class="navbar-brand">
-            <img src="images/sunef.png" alt="SUNEF Logo">
-            <span>SUNEF - EFRIS Integrator</span>
-        </a>
+    <nav class="navbar" aria-label="Main navigation">
+    <button class="navbar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+    </button>
+    <a href="/admind" class="navbar-brand">
+        <img src="{{ asset('images/sunef.png') }}" alt="SUNEF Logo" onerror="this.src='https://via.placeholder.com/36?text=Logo'">
+        <span>SUNEF - EFRIS Integrator</span>
+    </a>
+
+    @if(Session::has('user_logged_in') || Session::has('admin_logged_in'))
         <div class="user-profile">
-            <div class="user-avatar">JD</div>
+            @php
+                $name = Session::get('user_name') ?? 'User';
+                $role = Session::get('user_type') === 'user' ? 'SysUser' : (Session::get('user_department') ?? 'User');
+                $initials = strtoupper(substr($name, 0, 1)); // First letter
+            @endphp
+            <div class="user-avatar" aria-haspopup="true" aria-expanded="false">{{ $initials }}</div>
             <div class="user-info">
-                <div class="user-name">John Doe</div>
-                <div class="user-role">Administrator</div>
+                <div class="user-name">{{ $name }}</div>
+                <div class="user-role">{{ $role }}</div>
             </div>
-            <a href="#" class="logout-btn" onclick="return confirm('Are you sure you want to logout?');">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
+           
         </div>
-    </nav>
+    @endif
+</nav>
+
 
     <aside class="sidebar">
         <div class="sidebar-menu">

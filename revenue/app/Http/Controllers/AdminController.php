@@ -171,33 +171,6 @@ public function sendResetLink(Request $request)
     return redirect('/')->with('message', 'Password reset successfully. You can now log in.');
 }
 
-//displays the username too.
-// public function showResetForm(Request $request)
-// {
-//     $token = $request->query('token');
-//     $email = $request->query('email');
-
-//     if (!$token || !$email) {
-//         return redirect('/')->withErrors('Invalid password reset link.');
-//     }
-
-//     // Find the user by email
-//     $user = SysUser::where('email', $email)->first();
-
-//     if (!$user) {
-//         return redirect('/')->withErrors('User not found.');
-//     }
-
-//     // Optionally, you can verify the token exists and is not expired here (recommended)
-
-//     return view('reset-password', [
-//         'token' => $token,
-//         'email' => $email,
-//         'username' => $user->username,
-//     ]);
-// }
-
-
 
 }
 
