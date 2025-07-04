@@ -171,6 +171,33 @@ public function sendResetLink(Request $request)
     return redirect('/')->with('message', 'Password reset successfully. You can now log in.');
 }
 
+public function changePassword(Request $request)
+{
+    // Only allow logged-in sys_user
+    if (!Session::get('user_logged_in') || Session::get('user_type') !== 'sys_user') {
+        return redirect('/'); // Not authorized
+    }
+
+    if ($request->isMethod('post')) {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = SysUser::find(Session::get('user_id'));
+
+        if (!$user || !Hash::check($request->input('current_password'), $user->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect']);
+        }
+
+        $user->password = Hash::make($request->input('new_password'));
+        $user->save();
+
+        return back()->with('success', 'Password changed successfully.');
+    }
+
+    return view('change');
+}
 
 }
 

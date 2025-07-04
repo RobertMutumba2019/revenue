@@ -4,6 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SysUserController;
+use App\Http\Middleware\SessionTimeout;
+
+
+Route::middleware([SessionTimeout::class])->group(function () {
+   Route::get('/welcome', [AdminController::class, 'welcomePage'])->name('welcome');
+   Route::match(['get', 'post'], '/change-password', [AdminController::class, 'changePassword'])->name('change.password');
+
+});
 
 
 
@@ -14,7 +22,7 @@ Route::post('/logout', [AdminController::class, 'logout'])->name('logout'); // N
 // Admin Dashboard Route (protected)
 Route::get('/admind', [AdminController::class, 'adminDashboard'])->name('admind');
 
-Route::get('/welcome', [AdminController::class, 'welcomePage'])->name('welcome');
+
 
 
 Route::get('/sysuser/create', [SysUserController::class, 'create'])->name('sysuser.create');
