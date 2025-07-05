@@ -695,14 +695,19 @@
                 <i class="fas fa-user-plus"></i> Add Users</a>
             <a href="/viewa" class="@if(Route::is('viewa')) active @endif" ><i class="fas fa-user"></i> View Users</a>
         </div>
+
+        <div>
+
         <a href="#" >
             <span class="icon"><i class="fas fa-cogs"></i></span> Settings
         </a>
-        
+    </div>
         {{-- log out --}}
+        
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
              @csrf
            </form>
+        
 
         <div class="menu-item">
         <a href="#" class="menu-link"
@@ -714,7 +719,7 @@
         <span>Logout</span>
     </a>
 </div>
-        
+  
     </aside>
     <main class="main-content">
         @yield('content')

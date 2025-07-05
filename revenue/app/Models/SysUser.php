@@ -18,19 +18,32 @@ class SysUser extends Model
         'password',
     ];
 
-    public function gender()
+ 
+    public function department()
 {
-    return $this->belongsTo(Gender::class, 'user_gender');
-}
-
-public function department()
-{
-    return $this->belongsTo(Department::class, 'user_department_id');
+    return $this->belongsTo(Department::class, 'department_id');
 }
 
 public function designation()
 {
-    return $this->belongsTo(Designation::class, 'user_designation_id');
+    return $this->belongsTo(Designation::class, 'designation_id');
 }
+
+public function gender()
+{
+    return $this->belongsTo(Gender::class, 'gender_id');
+}
+
+//checking the status
+public function isActive()
+{
+    return $this->status == 1;
+}
+
+public function isOnline()
+{
+    return $this->last_seen && now()->diffInMinutes($this->last_seen) <= 5;
+}
+
 
 }

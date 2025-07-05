@@ -48,6 +48,10 @@
                             <th>Gender</th>
                             <th>Department</th>
                             <th>User Role</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Status</th>
+                            <th>Online</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,6 +65,25 @@
                             <td>{{ $user->gender->name ?? 'N/A' }}</td>
                             <td>{{ $user->department->name ?? 'N/A' }}</td>
                             <td>{{ $user->designation->name ?? 'N/A' }}</td>
+                            <td>{{ $user->username }}</td>
+                            <td>{{ $user->password }}</td>
+                            <td>
+    @if ($user->isActive())
+        <span class="badge bg-success">Active</span>
+    @else
+        <span class="badge bg-danger">Locked</span>
+    @endif
+</td>
+
+<td>
+    @if ($user->isOnline())
+        <span class="badge bg-primary">Online</span>
+    @else
+        <span class="badge bg-secondary">Offline</span>
+    @endif
+</td>
+
+                            
                         </tr>
                         @empty
                         <tr><td colspan="8" class="no-results">No users found.</td></tr>

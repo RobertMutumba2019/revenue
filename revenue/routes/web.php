@@ -10,8 +10,10 @@ use App\Http\Middleware\SessionTimeout;
 Route::middleware([SessionTimeout::class])->group(function () {
    Route::get('/welcome', [AdminController::class, 'welcomePage'])->name('welcome');
    Route::match(['get', 'post'], '/change-password', [AdminController::class, 'changePassword'])->name('change.password');
-
+  
 });
+
+
 
 
 

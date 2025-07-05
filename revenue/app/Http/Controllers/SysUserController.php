@@ -69,12 +69,11 @@ class SysUserController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
+
 public function viewa(Request $request)
 {
+    $query = SysUser::with(['department', 'designation', 'gender']); // Eager-load relationships
 
-    $query = SysUser::query();
-
-    // If search query provided, filter by surname or othername or email or phone
     if ($request->has('search') && !empty($request->search)) {
         $search = $request->search;
         $query->where(function($q) use ($search) {
@@ -85,11 +84,11 @@ public function viewa(Request $request)
         });
     }
 
-    // Pagination optional but recommended
     $users = $query->paginate(15);
 
     return view('viewa', compact('users'));
 }
+
 
 public function destroy(Request $request)
 {
