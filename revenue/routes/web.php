@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SysUserController;
 use App\Http\Middleware\SessionTimeout;
+use App\Http\Controllers\SettingController;
 
 
 Route::middleware([SessionTimeout::class])->group(function () {
@@ -12,6 +13,13 @@ Route::middleware([SessionTimeout::class])->group(function () {
    Route::match(['get', 'post'], '/change-password', [AdminController::class, 'changePassword'])->name('change.password');
   
 });
+
+
+
+
+Route::get('/settings', [SettingController::class, 'showSettingsForm'])->name('settings.form');
+Route::post('/settings', [SettingController::class, 'updateSettings'])->name('settings.update');
+
 
 
 

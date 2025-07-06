@@ -698,7 +698,7 @@
 
         <div>
 
-        <a href="#" >
+        <a href="/settings" >
             <span class="icon"><i class="fas fa-cogs"></i></span> Settings
         </a>
     </div>
