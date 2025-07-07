@@ -30,7 +30,7 @@ class SysUserController extends Controller
             'telephone' => 'required|string|max:20',
             'email' => 'required|email|unique:sys_users,email',
             'user_gender' => 'nullable|exists:gender,id',
-            'user_department_id' => 'required|exists:departments,id',
+            'user_department_id' => 'required|exists:departments,dept_id',
             'designation' => 'required|exists:designations,id',
             'user_type' => 'required|in:A,V',
         ]);

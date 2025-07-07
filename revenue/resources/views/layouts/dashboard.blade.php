@@ -692,6 +692,16 @@
             <span class="icon"><i class="fas fa-sync-alt me-1"></i></span> Update Password.
         </a>
     </div>
+
+        <a href="/departments" >
+            <span class="icon"><i class="fas fa-home"></i></span> Department
+        </a>
+
+        
+
+        <a href="/designations" >
+            <span class="icon"><i class="fas fa-user-circle"></i></span> Designations
+        </a>
         
         <a href="/welcome" >
             <span class="icon"><i class="fas fa-home"></i></span> Users Page

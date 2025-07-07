@@ -106,8 +106,8 @@
             return (
                 <div className="login-box flex items-center justify-center min-h-screen px-4">
                     <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
-                        <img src="/images/sunef.png" alt="SUNEF Logo"
-                             className="absolute -top-20 left-1/2 transform -translate-x-1/2 w-32" />
+                        
+
                         <div className="text-center mb-6">
                             <h1 className="text-3xl font-bold text-red-600">SUNEF</h1>
                             <h5 className="text-gray-600 mt-2">

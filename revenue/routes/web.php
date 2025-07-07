@@ -6,7 +6,39 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SysUserController;
 use App\Http\Middleware\SessionTimeout;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DesignationController;
 
+
+
+
+// Index
+Route::get('/designations', [DesignationController::class, 'index'])->name('designations');
+
+
+Route::get('/designations/create', [DesignationController::class, 'create'])->name('designations_create');
+
+// Store
+Route::post('/designations', [DesignationController::class, 'store'])->name('designations_store');
+
+// Edit
+Route::get('/designations/{designation}/edit', [DesignationController::class, 'edit'])->name('designations_edit');
+
+// Update
+Route::put('/designations/{designation}', [DesignationController::class, 'update'])->name('designations_update');
+
+// Delete
+Route::delete('/designations/{designation}', [DesignationController::class, 'destroy'])->name('designations_destroy');
+
+
+
+Route::get('/departments', [DepartmentController::class, 'index'])->name('departments');
+Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments_create');
+Route::post('/departments', [DepartmentController::class, 'store'])->name('departments_store');
+
+Route::get('/departments/{dept_id}/edit', [DepartmentController::class, 'edit'])->name('departments_edit');
+Route::put('/departments/{dept_id}', [DepartmentController::class, 'update'])->name('departments_update');
+Route::delete('/departments/{dept_id}', [DepartmentController::class, 'destroy'])->name('departments_destroy');
 
 Route::middleware([SessionTimeout::class])->group(function () {
    Route::get('/welcome', [AdminController::class, 'welcomePage'])->name('welcome');
@@ -14,10 +46,7 @@ Route::middleware([SessionTimeout::class])->group(function () {
   Route::get('/viewer', [SysUserController::class, 'welcomeUserDashboard'])->name('viewer');
   Route::get('/download', [SysUserController::class, 'downloadUserPDF'])->name('download');
 
-
 });
-
-
 
 
 Route::get('/settings', [SettingController::class, 'showSettingsForm'])->name('settings.form');

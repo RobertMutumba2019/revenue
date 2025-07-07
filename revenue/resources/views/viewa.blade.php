@@ -76,7 +76,7 @@
                 @endif
             </td>
 
-            <td>{{ $user->department->name ?? 'N/A' }}</td>
+            <td>{{ $user->department->dept_name ?? 'N/A' }}</td>
             <td>{{ $user->designation->name ?? 'N/A' }}</td>
             <td>{{ $user->username }}</td>
             <td>••••••</td> <!-- Masked password -->
