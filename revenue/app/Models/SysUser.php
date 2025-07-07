@@ -11,12 +11,21 @@ class SysUser extends Model
 
     protected $fillable = [
         'surname', 'othername', 'telephone', 'email', 'gender_id',
-        'department_id', 'username', 'designation_id', 'password'
+        'department_id', 'username', 'designation_id', 'password', 'user_type'
     ];
 
     protected $hidden = [
         'password',
     ];
+public function isAdmin()
+{
+    return $this->user_type === 'A';
+}
+
+public function isViewer()
+{
+    return $this->user_type === 'V';
+}
 
  
     public function department()

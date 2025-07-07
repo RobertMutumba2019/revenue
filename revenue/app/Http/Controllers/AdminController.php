@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
-use App\Models\Administrator;
+
 use App\Models\SysUser; // Import the SysUser model
 use App\Models\Department; // Import Department model for user's department name
 use Illuminate\Support\Facades\Hash;
@@ -17,98 +18,119 @@ class AdminController extends Controller
 {
     /**
      * Show the login form.
-     *
-     * @return \Illuminate\View\View
      */
     public function showLoginForm()
     {
-        return view('login'); // React-based login page
+        return view('login');
     }
 
     /**
-     * Handle user login attempt.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * Handle user login.
      */
     public function login(Request $request)
     {
         $username = $request->input('username');
         $password = $request->input('password');
 
-        // --- Attempt to log in as Administrator ---
-        $admin = Administrator::where('admin_name', $username)->first();
-
-        if ($admin && Hash::check($password, $admin->password)) {
-            // Admin login successful
-            Session::put('admin_logged_in', true);
-            Session::put('user_type', 'admin'); // Store user type in session
-            Session::flash('login_success_message', 'Welcome back, Administrator!'); // Flash success message
-            return response()->json(['redirect' => url('/admind')]);
-        }
-
-        // --- Attempt to log in as SysUser ---
+        // Attempt to log in as SysUser
         $sysUser = SysUser::where('username', $username)->first();
 
         if ($sysUser && Hash::check($password, $sysUser->password)) {
-            // SysUser login successful
+            // Session info
             Session::put('user_logged_in', true);
             Session::put('user_id', $sysUser->id);
-            Session::put('user_name', $sysUser->othername ? $sysUser->othername : $sysUser->surname); // Use othername if available, else surname
-            Session::put('user_type', 'sys_user'); // Store user type in session
+            Session::put('user_name', $sysUser->othername ?? $sysUser->surname);
+            Session::put('user_type', $sysUser->user_type); // A or V
 
             // Get department name
             $department = Department::find($sysUser->department_id);
             $departmentName = $department ? $department->name : 'Unknown Department';
             Session::put('user_department', $departmentName);
 
-            // Flash success message with user's name and department
+            // Welcome message
             Session::flash('login_success_message', "Welcome, " . Session::get('user_name') . " from " . $departmentName . "!");
-            return response()->json(['redirect' => url('/welcome')]); // Redirect to the welcome page
+
+            // Redirect
+            if ($sysUser->user_type === 'A') {
+                return response()->json(['redirect' => url('/admind')]);
+            } else {
+                return response()->json(['redirect' => url('/welcome')]);
+            }
         }
 
-        // --- Both login attempts failed ---
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
     /**
-     * Show the admin dashboard.
-     *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * Admin dashboard.
      */
-    public function adminDashboard()
-    {
-        // Ensure only admins can access this dashboard
-        if (!Session::get('admin_logged_in') || Session::get('user_type') !== 'admin') {
-            return redirect('/'); // Redirect to login if not admin
-        }
+    // public function adminDashboard()
+    // {
+    //     if (!Session::get('user_logged_in') || Session::get('user_type') !== 'A') {
+    //         return redirect('/');
+    //     }
 
-        return view('admind');
+    //     return view('admind');
+    // }
+
+
+    public function adminDashboard()
+{
+    if (!Session::get('user_logged_in') || Session::get('user_type') !== 'A') {
+        return redirect('/');
     }
 
-    /**
-     * Show the regular user welcome page.
-     *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     */
-    public function welcomePage()
-    {
-        // Ensure only regular users can access this page
-        if (!Session::get('user_logged_in') || Session::get('user_type') !== 'sys_user') {
-            return redirect('/'); // Redirect to login if not a sys_user
-        }
+    // Set the flag allowing admin to later visit user dashboard
+    Session::put('came_from_admin', true);
 
+    return view('admind');
+}
+
+
+    /**
+     * User (viewer) welcome dashboard.
+     */
+    // public function welcomePage()
+    // {
+    //     if (!Session::get('user_logged_in') || Session::get('user_type') !== 'V') {
+    //         return redirect('/');
+    //     }
+
+    //     return view('welcome');
+    // }
+
+    public function welcomePage()
+{
+    if (!Session::get('user_logged_in')) {
+        return redirect('/');
+    }
+
+    // Allow if it's a normal user (V)
+    if (Session::get('user_type') === 'V') {
         return view('welcome');
     }
 
-   
-    // logout method
-    public function logout(Request $request)
-{
-    Session::flush(); // Clear all session data
-    $request->session()->regenerate(); // Prevent session fixation
-    return redirect('/'); // Send back to login page
+    // Allow admin (A) ONLY if he has visited /admind first
+    if (Session::get('user_type') === 'A' && Session::has('came_from_admin')) {
+        return view('welcome');
+    }
+
+    // Otherwise block
+    return redirect('/');
 }
+
+
+    /**
+     * Logout function.
+     */
+    public function logout(Request $request)
+    {
+        Session::flush();
+        $request->session()->regenerate();
+        return redirect('/');
+    }
+
+
 
   
 public function sendResetLink(Request $request)
@@ -173,9 +195,9 @@ public function sendResetLink(Request $request)
 
 public function changePassword(Request $request)
 {
-    // Only allow logged-in sys_user
-    if (!Session::get('user_logged_in') || Session::get('user_type') !== 'sys_user') {
-        return redirect('/'); // Not authorized
+    // Allow only logged-in A or V users
+    if (!Session::get('user_logged_in') || !in_array(Session::get('user_type'), ['A', 'V'])) {
+        return redirect('/');
     }
 
     if ($request->isMethod('post')) {
@@ -196,8 +218,9 @@ public function changePassword(Request $request)
         return back()->with('success', 'Password changed successfully.');
     }
 
-    return view('change');
+    return view('change'); // make sure this Blade view exists
 }
+
 
 }
 

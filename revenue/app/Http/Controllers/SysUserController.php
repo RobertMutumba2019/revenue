@@ -32,6 +32,7 @@ class SysUserController extends Controller
             'user_gender' => 'nullable|exists:gender,id',
             'user_department_id' => 'required|exists:departments,id',
             'designation' => 'required|exists:designations,id',
+            'user_type' => 'required|in:A,V',
         ]);
 
         // Generate username: first letter surname + first letter othername + 1 + 4 random digits
@@ -54,6 +55,7 @@ class SysUserController extends Controller
             'username' => $username,
             'designation_id' => $request->designation,
             'password' => Hash::make($passwordPlain),
+            'user_type' => $request->user_type,
         ]);
 
         // Send email with credentials

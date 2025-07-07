@@ -13,6 +13,8 @@ class Administrator extends Model
 }
 
 
+//php artisan tinker
+
 // use Illuminate\Support\Facades\Hash;
 // use App\Models\Administrator;
 

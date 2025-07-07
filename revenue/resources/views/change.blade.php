@@ -1,5 +1,12 @@
-@extends('layouts.well') 
+@extends('layouts.app') 
 @section('content')
+
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 <style>
     .form-wrapper {
         background: #f8f9fa;
@@ -90,7 +97,21 @@
                             <i class="fas fa-sync-alt me-1"></i> Update Password
                         </button>
                     </div>
+                    
+
+
+                   
                 </form>
+
+                <div class="d-grid mt-3">
+    <button type="button" class="btn btn-primary" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <i class="fas fa-sign-out-alt me-1"></i> Test New Password
+    </button>
+</div>
+
+               
+
+            
 
                 <div class="form-footer mt-4">
                     For security, make sure your new password is unique and not shared.
@@ -99,4 +120,9 @@
         </div>
     </div>
 </div>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
 @endsection

@@ -630,27 +630,6 @@
     </style>
 </head>
 <body>
-    {{-- <nav class="navbar" aria-label="Main navigation">
-        <button class="navbar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
-            <i class="fas fa-bars"></i>
-        </button>
-        <a href="/admind" class="navbar-brand">
-            <img src="images/sunef.png" alt="SUNEF Logo" onerror="this.src='https://via.placeholder.com/36?text=Logo'">
-            <span>SUNEF - EFRIS Integrator</span>
-        </a>
-        <div class="user-profile">
-            <div class="user-avatar" aria-haspopup="true" aria-expanded="false">JD</div>
-            <div class="user-info">
-                <div class="user-name">John Doe</div>
-                <div class="user-role">Administrator</div>
-            </div>
-            <div class="user-dropdown" aria-label="User menu">
-                <a href="/profile"><i class="fas fa-user"></i> Profile</a>
-                <a href="/change-password"><i class="fas fa-key"></i> Change Password</a>
-                <a href="/logout" onclick="return confirm('Are you sure you want to logout?');"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </nav> --}}
 
     <nav class="navbar" aria-label="Main navigation">
     <button class="navbar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
@@ -661,26 +640,30 @@
         <span>SUNEF - EFRIS Integrator</span>
     </a>
 
-    @if(Session::has('user_logged_in') || Session::has('admin_logged_in'))
+    @if(Session::has('user_logged_in'))
         <div class="user-profile">
             @php
-                $name = Session::get('user_name') ?? 'Admin';
-                $role = Session::get('user_type') === 'admin' ? 'Administrator' : (Session::get('user_department') ?? 'User');
-                $initials = strtoupper(substr($name, 0, 1)); // First letter
+                $name = Session::get('user_name') ?? 'User';
+                $userType = Session::get('user_type'); // 'A' or 'C'
+                $role = $userType === 'A' ? 'Administrator' : (Session::get('user_department') ?? 'User');
+                $initials = strtoupper(substr($name, 0, 1));
             @endphp
             <div class="user-avatar" aria-haspopup="true" aria-expanded="false">{{ $initials }}</div>
             <div class="user-info">
                 <div class="user-name">{{ $name }}</div>
                 <div class="user-role">{{ $role }}</div>
             </div>
+
             <div class="user-dropdown" aria-label="User menu">
-                <a href="/profile"><i class="fas fa-user"></i> Profile</a>
-                <a href="/change-password"><i class="fas fa-key"></i> Change Password</a>
+            
+
+                
                 <a href="/logout" onclick="return confirm('Are you sure you want to logout?');"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
     @endif
 </nav>
+
 
     <aside class="sidebar" aria-label="Sidebar navigation">
         <a href="/admind" class="@if(Route::is('admind')) active @endif">
@@ -702,6 +685,17 @@
             <span class="icon"><i class="fas fa-cogs"></i></span> Settings
         </a>
     </div>
+
+      <div>
+
+        <a href="/change-password" >
+            <span class="icon"><i class="fas fa-sync-alt me-1"></i></span> Update Password.
+        </a>
+    </div>
+        
+        <a href="/welcome" >
+            <span class="icon"><i class="fas fa-home"></i></span> Users Page
+        </a>
         {{-- log out --}}
         
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

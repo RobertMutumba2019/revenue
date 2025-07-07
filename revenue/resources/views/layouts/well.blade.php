@@ -331,34 +331,41 @@
 </head>
 <body>
     <nav class="navbar" aria-label="Main navigation">
-        <button class="navbar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
-            <i class="fas fa-bars"></i>
-        </button>
-        <a href="/admind" class="navbar-brand">
-            <img src="{{ asset('images/sunef.png') }}" alt="SUNEF Logo" onerror="this.src='https://via.placeholder.com/36?text=Logo'">
-            <span>SUNEF - EFRIS Integrator</span>
-        </a>
-        @if(Session::has('user_logged_in') || Session::has('admin_logged_in'))
-            <div class="user-profile">
-                @php
-                    $name = Session::get('user_name', 'Guest');
-                    $role = Session::get('user_type') === 'admin' ? 'Administrator' : (Session::get('user_department', 'User'));
-                    $initials = strtoupper(substr($name, 0, 2));
-                @endphp
-                <div class="user-avatar" aria-haspopup="true" aria-expanded="false">{{ $initials }}</div>
-                <div class="user-info">
-                    <div class="user-name">{{ $name }}</div>
-                    <div class="user-role">{{ $role }}</div>
-                </div>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-                <a href="#" class="logout-btn" onclick="event.preventDefault(); if (confirm('Do you intend to logout?')) document.getElementById('logout-form').submit();">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </div>
-        @endif
-    </nav>
+    <button class="navbar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <a href="/admind" class="navbar-brand">
+        <img src="{{ asset('images/sunef.png') }}" alt="SUNEF Logo" onerror="this.src='https://via.placeholder.com/36?text=Logo'">
+        <span>SUNEF - EFRIS Integrator</span>
+    </a>
+
+    @if(Session::has('user_logged_in'))
+        <div class="user-profile">
+            @php
+                $name = Session::get('user_name') ?? 'User';
+                $userType = Session::get('user_type');
+                $role = $userType === 'V' ? 'Normal' : (Session::get('user_department') ?? 'User');
+                $initials = strtoupper(substr($name, 0, 1));
+            @endphp
+
+            <div class="user-avatar" aria-haspopup="true" aria-expanded="false">{{ $initials }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ $name }}</div>
+                <div class="user-role">{{ $role }}</div>
+           
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            <a href="#" class="logout-btn"
+               onclick="event.preventDefault(); if (confirm('Do you intend to logout?')) document.getElementById('logout-form').submit();">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    @endif
+</nav>
+
 
     <aside class="sidebar">
         <div class="sidebar-menu">

@@ -77,12 +77,16 @@
                             </select>
                         </div>
 
-                        {{-- <div class="form-group">
-                            <label>Username <span class="required">*</span></label>
-                            <input type="text" name="username" required 
-                                   class="form-input" 
-                                   placeholder="Enter username">
-                        </div> --}}
+                        <div class="form-group">
+                      <label>User Type <span class="must">*</span></label>
+                      <select name="user_type" class="form-control" required>
+                      <option value="">-- Select User Type --</option>
+        <option value="A">Admin</option>
+        <option value="V">Normal User</option>
+    </select>
+</div>
+
+
 
                         <div class="form-group">
                             <label>User Role <span class="required">*</span></label>
