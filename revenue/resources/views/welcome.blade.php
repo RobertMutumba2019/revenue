@@ -57,15 +57,26 @@
                         <p class="text-xs text-gray-500">2 minutes ago</p>
                     </div>
                 </div>
-                <div class="flex items-start">
-                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-4">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium">New user registered: Sarah Johnson</p>
-                        <p class="text-xs text-gray-500">15 minutes ago</p>
-                    </div>
-                </div>
+               
+
+                
+                @if($latestUser)
+    <div class="flex items-start">
+        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-4">
+            <i class="fas fa-user-plus"></i>
+        </div>
+        <div>
+            <p class="text-sm font-medium">
+                New user registered: {{ $latestUser->surname }} {{ $latestUser->othername }}
+            </p>
+            <p class="text-xs text-gray-500">
+                {{ $latestUser->created_at->diffForHumans() }}
+            </p>
+        </div>
+    </div>
+@endif
+
+
                 <div class="flex items-start">
                     <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 mr-4">
                         <i class="fas fa-exclamation-circle"></i>

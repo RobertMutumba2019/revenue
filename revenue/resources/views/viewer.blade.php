@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>User Dashboard</h2>
+    <h2>All Participants</h2>
 
     <!-- Search & Download -->
     <form method="GET" action="{{ route('viewer') }}" class="search-form mb-3" style="display: flex; gap: 10px;">

@@ -21,21 +21,25 @@
                 <div class="number">0</div>
             </div>
         </div>
-        <div class="info-box bg-orange">
-            <div class="icon"><i class="fa fa-users"></i></div>
-            <div class="content">
-                <div class="text">REGISTERED USERS</div>
-                <div class="number">0</div>
-            </div>
-        </div>
-        <div class="info-box bg-pink">
-            <div class="icon"><i class="fa fa-circle"></i></div>
-            <div class="content">
-                <div class="text">ONLINE USERS</div>
-                <div class="number">0</div>
-            </div>
-        </div>
+
+       <div class="info-box bg-orange">
+    <div class="icon"><i class="fa fa-users"></i></div>
+    <div class="content">
+        <div class="text">REGISTERED USERS</div>
+        <div class="number">{{ $totalUsers }}</div>
     </div>
+</div>
+
+<div class="info-box bg-pink">
+    <div class="icon"><i class="fa fa-circle"></i></div>
+    <div class="content">
+        <div class="text">ONLINE USERS</div>
+        <div class="number">{{ $onlineUsers }}</div>
+    </div>
+</div>
+</div>
+
+  
     <div class="stat-section">
         <h3>EFRIS Uploaded Invoices</h3>
         <table border="0">

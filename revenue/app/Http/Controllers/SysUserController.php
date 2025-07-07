@@ -69,6 +69,8 @@ class SysUserController extends Controller
         }
 
         return redirect()->back()->with('success', $message);
+
+
     }
 
 

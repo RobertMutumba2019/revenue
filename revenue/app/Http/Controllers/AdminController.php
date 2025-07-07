@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
+
 class AdminController extends Controller
 {
     /**
@@ -74,17 +75,47 @@ class AdminController extends Controller
     // }
 
 
-    public function adminDashboard()
+public function adminDashboard()
 {
     if (!Session::get('user_logged_in') || Session::get('user_type') !== 'A') {
         return redirect('/');
     }
 
-    // Set the flag allowing admin to later visit user dashboard
+    // Set flag to allow admin later to access user dashboard
     Session::put('came_from_admin', true);
 
-    return view('admind');
+    // Get total registered users
+    $totalUsers = SysUser::count();
+
+    // Get online users (last_seen within 5 minutes)
+    $onlineUsers = SysUser::where('last_seen', '>=', now()->subMinutes(5))->count();
+
+    // Pass counts to the view
+    return view('admind', compact('totalUsers', 'onlineUsers'));
 }
+
+      
+     public function welcomePage()
+{
+    // 1. Ensure user is logged in
+    if (!Session::get('user_logged_in')) {
+        return redirect('/');
+    }
+
+    // 2. Check user type and redirect appropriately
+    if (
+        (Session::get('user_type') === 'A' && Session::has('came_from_admin')) ||
+        Session::get('user_type') === 'V'
+    ) {
+        $latestUser = SysUser::latest()->first(); // gets the most recently created user
+        return view('welcome', compact('latestUser'));
+    }
+
+    // 3. Block unauthorized access
+    return redirect('/');
+}
+
+     
 
 
     /**
@@ -99,25 +130,30 @@ class AdminController extends Controller
     //     return view('welcome');
     // }
 
-    public function welcomePage()
-{
-    if (!Session::get('user_logged_in')) {
-        return redirect('/');
-    }
+//     public function welcomePage()
+// {
 
-    // Allow if it's a normal user (V)
-    if (Session::get('user_type') === 'V') {
-        return view('welcome');
-    }
+//     
 
-    // Allow admin (A) ONLY if he has visited /admind first
-    if (Session::get('user_type') === 'A' && Session::has('came_from_admin')) {
-        return view('welcome');
-    }
+//     if (!Session::get('user_logged_in')) {
+//         return redirect('/');
+//     }
 
-    // Otherwise block
-    return redirect('/');
-}
+//     // Allow if it's a normal user (V)
+//     if (Session::get('user_type') === 'V') {
+//         return view('welcome');
+//     }
+
+//     // Allow admin (A) ONLY if he has visited /admind first
+//     if (Session::get('user_type') === 'A' && Session::has('came_from_admin')) {
+//         return view('welcome');
+//     }
+
+//     // Otherwise block
+//     return redirect('/');
+// }
+
+
 
 
     /**
