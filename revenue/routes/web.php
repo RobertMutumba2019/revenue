@@ -11,7 +11,10 @@ use App\Http\Controllers\SettingController;
 Route::middleware([SessionTimeout::class])->group(function () {
    Route::get('/welcome', [AdminController::class, 'welcomePage'])->name('welcome');
    Route::match(['get', 'post'], '/change-password', [AdminController::class, 'changePassword'])->name('change.password');
-  
+  Route::get('/viewer', [SysUserController::class, 'welcomeUserDashboard'])->name('viewer');
+  Route::get('/download', [SysUserController::class, 'downloadUserPDF'])->name('download');
+
+
 });
 
 

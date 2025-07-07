@@ -38,58 +38,72 @@
                     <button type="submit" class="delete-btn"><i class="fas fa-trash"></i> Delete Selected</button>
                 </div>
                 <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="select-all" /></th>
-                            <th>Surname</th>
-                            <th>Other Name</th>
-                            <th>Telephone</th>
-                            <th>Email</th>
-                            <th>Gender</th>
-                            <th>Department</th>
-                            <th>User Role</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Status</th>
-                            <th>Online</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($users as $user)
-                        <tr>
-                            <td><input type="checkbox" name="user_ids[]" value="{{ $user->id }}"></td>
-                            <td>{{ $user->surname }}</td>
-                            <td>{{ $user->othername ?? 'N/A' }}</td>
-                            <td>{{ $user->telephone }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->gender->name ?? 'N/A' }}</td>
-                            <td>{{ $user->department->name ?? 'N/A' }}</td>
-                            <td>{{ $user->designation->name ?? 'N/A' }}</td>
-                            <td>{{ $user->username }}</td>
-                            <td>{{ $user->password }}</td>
-                            <td>
-    @if ($user->isActive())
-        <span class="badge bg-success">Active</span>
-    @else
-        <span class="badge bg-danger">Locked</span>
-    @endif
-</td>
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="select-all" /></th>
+            <th>Surname</th>
+            <th>Other Name</th>
+            <th>Telephone</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>User Type</th>
+            <th>Department</th>
+            <th>User Role</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Status</th>
+            <th>Online</th>
+            <th>Last Updated</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($users as $user)
+        <tr>
+            <td><input type="checkbox" name="user_ids[]" value="{{ $user->id }}"></td>
+            <td>{{ $user->surname }}</td>
+            <td>{{ $user->othername ?? 'N/A' }}</td>
+            <td>{{ $user->telephone }}</td>
+            <td>{{ $user->email }}</td>
+            <td>{{ $user->gender->name ?? 'N/A' }}</td>
 
-<td>
-    @if ($user->isOnline())
-        <span class="badge bg-primary">Online</span>
-    @else
-        <span class="badge bg-secondary">Offline</span>
-    @endif
-</td>
+            <td>
+                @if($user->user_type === 'A')
+                    <span class="badge bg-success">Admin</span>
+                @elseif($user->user_type === 'V')
+                    <span class="badge bg-info">Viewer</span>
+                @else
+                    <span class="badge bg-secondary">Unknown</span>
+                @endif
+            </td>
 
-                            
-                        </tr>
-                        @empty
-                        <tr><td colspan="8" class="no-results">No users found.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
+            <td>{{ $user->department->name ?? 'N/A' }}</td>
+            <td>{{ $user->designation->name ?? 'N/A' }}</td>
+            <td>{{ $user->username }}</td>
+            <td>••••••</td> <!-- Masked password -->
+
+            <td>
+                @if ($user->status === 1 || $user->isActive())
+                    <span class="badge bg-success">Active</span>
+                @else
+                    <span class="badge bg-danger">Locked</span>
+                @endif
+            </td>
+
+            <td>
+                @if ($user->isOnline())
+                    <span class="badge bg-primary">Online</span>
+                @else
+                    <span class="badge bg-secondary">Offline</span>
+                @endif
+            </td>
+
+            <td>{{ $user->updated_at ? $user->updated_at->diffForHumans() : 'Never' }}</td>
+        </tr>
+        @empty
+        <tr><td colspan="14" class="no-results">No users found.</td></tr>
+        @endforelse
+    </tbody>
+</table>
             </form>
 
             <!-- Pagination -->

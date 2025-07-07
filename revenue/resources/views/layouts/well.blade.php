@@ -382,8 +382,10 @@
                     <span>Users</span>
                 </a>
                 <div class="submenu">
-               
+
+                    <a href="/viewer" class="menu-link">All clients</a>
                     <a href="/change-password" class="menu-link">Change Password</a>
+
                 </div>
             </div>
             <div class="menu-item">

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail; // Import the Mail facade
 use App\Mail\WelcomeEmail; // Import your new Mailable class
 use Illuminate\Support\Facades\Log; // Import the Log facade - FIX for "undefined type Log"
-
+use Barryvdh\DomPDF\Facade\Pdf;
 class SysUserController extends Controller
 {
     public function create()
@@ -104,5 +104,55 @@ public function destroy(Request $request)
 
     return redirect()->back()->with('error', 'No users selected.');
 }
+
+public function welcomeUserDashboard(Request $request)
+{
+    $query = SysUser::with(['department', 'designation', 'gender']);
+
+    if ($request->has('search') && !empty($request->search)) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('surname', 'LIKE', "%$search%")
+              ->orWhere('othername', 'LIKE', "%$search%")
+              ->orWhere('email', 'LIKE', "%$search%")
+              ->orWhere('user_type', 'LIKE', "%$search%")
+              ->orWhereHas('department', function ($q) use ($search) {
+                  $q->where('name', 'LIKE', "%$search%");
+              })
+              ->orWhereHas('designation', function ($q) use ($search) {
+                  $q->where('name', 'LIKE', "%$search%");
+              });
+        });
+    }
+
+    $users = $query->orderBy('updated_at', 'desc')->paginate(15);
+
+    return view('viewer', compact('users'));
+}
+
+
+
+public function downloadUserPDF(Request $request)
+{
+    $query = SysUser::with(['department', 'designation']);
+
+    if ($request->has('search') && !empty($request->search)) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('surname', 'LIKE', "%$search%")
+              ->orWhere('othername', 'LIKE', "%$search%")
+              ->orWhere('email', 'LIKE', "%$search%")
+              ->orWhere('user_type', 'LIKE', "%$search%");
+        });
+    }
+
+    $users = $query->get();
+
+    $pdf = Pdf::loadView('download', compact('users'));
+
+    return $pdf->stream('user_dashboard.pdf');
+}
+
+
 
 }
