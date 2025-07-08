@@ -697,7 +697,9 @@
             <span class="icon"><i class="fas fa-home"></i></span> Department
         </a>
 
-        
+        <a href="/districts" >
+            <span class="icon"><i class="fas fa-home"></i></span> District
+        </a>
 
         <a href="/designations" >
             <span class="icon"><i class="fas fa-user-circle"></i></span> Designations

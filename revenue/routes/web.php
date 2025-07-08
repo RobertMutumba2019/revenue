@@ -8,29 +8,34 @@ use App\Http\Middleware\SessionTimeout;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\DistrictController;
 
 
 
+// List all districts
+Route::get('/districts', [DistrictController::class, 'allDistricts'])->name('districts_all');
 
-// Index
+// Show add district form
+Route::get('/districts/add', [DistrictController::class, 'addDistrict'])->name('districts_add');
+
+// Store new district
+Route::post('/districts/store', [DistrictController::class, 'storeDistrict'])->name('districts_store');
+
+// Show edit district form
+Route::get('/districts/edit/{id}', [DistrictController::class, 'editDistrict'])->name('districts_edit');
+
+// Update existing district
+Route::post('/districts/update/{id}', [DistrictController::class, 'updateDistrict'])->name('districts_update');
+
+// Delete district
+Route::delete('/districts/delete/{id}', [DistrictController::class, 'deleteDistrict'])->name('districts_delete');
+
 Route::get('/designations', [DesignationController::class, 'index'])->name('designations');
-
-
 Route::get('/designations/create', [DesignationController::class, 'create'])->name('designations_create');
-
-// Store
 Route::post('/designations', [DesignationController::class, 'store'])->name('designations_store');
-
-// Edit
 Route::get('/designations/{designation}/edit', [DesignationController::class, 'edit'])->name('designations_edit');
-
-// Update
 Route::put('/designations/{designation}', [DesignationController::class, 'update'])->name('designations_update');
-
-// Delete
 Route::delete('/designations/{designation}', [DesignationController::class, 'destroy'])->name('designations_destroy');
-
-
 
 Route::get('/departments', [DepartmentController::class, 'index'])->name('departments');
 Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments_create');
