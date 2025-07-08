@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +23,9 @@
             --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             --border-radius: 0.75rem;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --yellow-hover-bg: rgba(255, 255, 0, 0.2); /* Semi-transparent yellow for hover */
+            --yellow-active-bg: rgba(255, 255, 0, 0.3); /* Slightly stronger yellow for active */
+            --yellow-accent-border: var(--orange); /* Using your existing orange for the accent border */
         }
 
         * {
@@ -196,7 +198,28 @@
             top: 64px;
             height: calc(100vh - 64px);
             transition: var(--transition);
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+            overflow-y: auto; /* Make sidebar scrollable */
+            z-index: 1000; /* Ensure it's above content but below navbar */
+        }
+
+        /* Custom Scrollbar for Webkit Browsers */
+        .sidebar::-webkit-scrollbar {
+            width: 8px; /* Width of the scrollbar */
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--dark-bg); /* Color of the track */
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #555; /* Color of the scroll thumb */
+            border-radius: 10px; /* Roundness of the scroll thumb */
+            border: 2px solid var(--dark-bg); /* Creates space around thumb */
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background-color: #777; /* Color of the scroll thumb on hover */
         }
 
         .sidebar a, .sidebar button {
@@ -204,7 +227,7 @@
             align-items: center;
             color: #f8fafc;
             text-decoration: none;
-            padding: 0.75rem 1.5rem;
+            padding: 0.85rem 1.5rem; /* Slightly increased padding */
             border: none;
             background: none;
             width: 100%;
@@ -216,16 +239,18 @@
             transition: var(--transition);
         }
 
+        /* Yellow Hover Effect */
         .sidebar a:hover, .sidebar button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-left-color: var(--accent);
-            color: #ffffff;
+            background-color: var(--yellow-hover-bg); /* Yellow hover background with transparency */
+            border-left-color: var(--yellow-accent-border); /* Use orange/yellow accent for the border */
+            color: #ffffff; /* Keep text white for better contrast */
         }
 
         .sidebar a.active {
-            background-color: rgba(255, 255, 255, 0.15);
-            border-left-color: var(--accent);
+            background-color: var(--yellow-active-bg); /* Slightly stronger yellow for active state */
+            border-left-color: var(--yellow-accent-border); /* Consistent with hover */
             font-weight: 600;
+            color: #ffffff;
         }
 
         .sidebar a .icon, .sidebar button .icon {
@@ -233,6 +258,11 @@
             width: 24px;
             text-align: center;
             font-size: 1.1rem;
+            transition: transform 0.3s ease; /* Subtle transition for icons */
+        }
+
+        .sidebar a:hover .icon, .sidebar button:hover .icon {
+            transform: scale(1.1); /* Slightly enlarge icon on hover */
         }
 
         .sidebar .dropdown-btn {
@@ -243,19 +273,20 @@
         .sidebar .dropdown-container {
             display: none;
             flex-direction: column;
-            padding-left: 2rem;
-            background-color: rgba(0, 0, 0, 0.2);
+            padding-left: 2.5rem; /* Increased padding for nested items */
+            background-color: rgba(0, 0, 0, 0.3); /* Slightly darker background for dropdown */
         }
 
         .sidebar .dropdown-container a {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-left: none;
+            padding: 0.6rem 1.5rem; /* Adjusted padding for dropdown links */
+            font-size: 0.88rem;
+            border-left: none; /* No left border for nested items by default */
         }
 
         .sidebar .dropdown-container a:hover {
-            background-color: rgba(255, 255, 255, 0.15);
-            border-left-color: var(--accent);
+            background-color: var(--yellow-hover-bg); /* Yellow hover for nested items */
+            border-left-color: var(--yellow-accent-border); /* Accent for nested items */
+            color: #ffffff;
         }
 
         /* Main Content Styles */
@@ -655,9 +686,7 @@
             </div>
 
             <div class="user-dropdown" aria-label="User menu">
-            
-
-                
+                {{-- No change needed here for dropdown content --}}
                 <a href="/logout" onclick="return confirm('Are you sure you want to logout?');"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
@@ -680,18 +709,16 @@
         </div>
 
         <div>
+            <a href="/settings" >
+                <span class="icon"><i class="fas fa-cogs"></i></span> Settings
+            </a>
+        </div>
 
-        <a href="/settings" >
-            <span class="icon"><i class="fas fa-cogs"></i></span> Settings
-        </a>
-    </div>
-
-      <div>
-
-        <a href="/change-password" >
-            <span class="icon"><i class="fas fa-sync-alt me-1"></i></span> Update Password.
-        </a>
-    </div>
+        <div>
+            <a href="/change-password" >
+                <span class="icon"><i class="fas fa-sync-alt me-1"></i></span> Update Password.
+            </a>
+        </div>
 
         <a href="/departments" >
             <span class="icon"><i class="fas fa-home"></i></span> Department
@@ -705,7 +732,6 @@
             <span class="icon"><i class="fas fa-user-circle"></i></span> Designations
         </a>
         
-
         <a href="{{ route('categories') }}" >
             <span class="icon"><i class="fas fa-user-circle"></i></span> Category
         </a>
@@ -719,22 +745,21 @@
         </a>
         {{-- log out --}}
         
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-             @csrf
-           </form>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
         
-
         <div class="menu-item">
-        <a href="#" class="menu-link"
-            onclick="event.preventDefault(); 
-                if (confirm('Do you intend to logout?')) {
-                    document.getElementById('logout-form').submit();
-                }">
-            <i class="fas fa-sign-out-alt"></i>
-        <span>Logout</span>
-    </a>
-</div>
-  
+            <a href="#" class="menu-link"
+                onclick="event.preventDefault(); 
+                    if (confirm('Do you intend to logout?')) {
+                        document.getElementById('logout-form').submit();
+                    }">
+                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                <span>Logout</span>
+            </a>
+        </div>
+ 
     </aside>
     <main class="main-content">
         @yield('content')
