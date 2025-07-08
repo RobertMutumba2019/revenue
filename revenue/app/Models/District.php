@@ -21,4 +21,6 @@ class District extends Model
     {
         return $this->belongsTo(SysUser::class, 'district_added_by');
     }
+
+    
 }

@@ -14,21 +14,12 @@ use App\Http\Controllers\DistrictController;
 
 // List all districts
 Route::get('/districts', [DistrictController::class, 'allDistricts'])->name('districts_all');
-
-// Show add district form
 Route::get('/districts/add', [DistrictController::class, 'addDistrict'])->name('districts_add');
-
-// Store new district
 Route::post('/districts/store', [DistrictController::class, 'storeDistrict'])->name('districts_store');
-
-// Show edit district form
 Route::get('/districts/edit/{id}', [DistrictController::class, 'editDistrict'])->name('districts_edit');
-
-// Update existing district
 Route::post('/districts/update/{id}', [DistrictController::class, 'updateDistrict'])->name('districts_update');
-
-// Delete district
 Route::delete('/districts/delete/{id}', [DistrictController::class, 'deleteDistrict'])->name('districts_delete');
+Route::get('/viewdistricts', [DistrictController::class, 'userViewDistricts'])->name('viewdistricts');
 
 Route::get('/designations', [DesignationController::class, 'index'])->name('designations');
 Route::get('/designations/create', [DesignationController::class, 'create'])->name('designations_create');
@@ -58,19 +49,12 @@ Route::get('/settings', [SettingController::class, 'showSettingsForm'])->name('s
 Route::post('/settings', [SettingController::class, 'updateSettings'])->name('settings.update');
 
 
-
-
-
-
 Route::get('/', [AdminController::class, 'showLoginForm'])->name('login');    // Login page (GET /)
 Route::post('/login', [AdminController::class, 'login']);                    // Login submission (POST /login) - Changed from '/' to '/login' for clarity and best practice
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout'); // New logout route
 
 // Admin Dashboard Route (protected)
 Route::get('/admind', [AdminController::class, 'adminDashboard'])->name('admind');
-
-
-
 
 Route::get('/sysuser/create', [SysUserController::class, 'create'])->name('sysuser.create');
 Route::post('/sysuser/create', [SysUserController::class, 'store'])->name('sysuser.store');

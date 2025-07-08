@@ -74,4 +74,17 @@ class DistrictController extends Controller
 
         return redirect()->route('districts_all')->with('success', 'District deleted successfully.');
     }
+
+    public function userViewDistricts(Request $request)
+{
+    $search = $request->input('search');
+
+    $districts = District::when($search, function ($query, $search) {
+        return $query->where('district_name', 'like', "%{$search}%")
+                     ->orWhere('district_code', 'like', "%{$search}%");
+    })->orderBy('district_name')->get();
+
+    return view('viewdistricts', compact('districts', 'search'));
+}
+
 }

@@ -389,9 +389,9 @@
                 </div>
             </div>
             <div class="menu-item">
-                <a href="#" class="menu-link">
+                <a href="/viewdistricts" class="menu-link">
                     <i class="fas fa-building"></i>
-                    <span>User Rights & Privileges</span>
+                    <span>All Districts.</span>
                 </a>
             </div>
             <div class="menu-item">
