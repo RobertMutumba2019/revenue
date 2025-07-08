@@ -9,8 +9,20 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\DictionaryCategoryControlller;
+use App\Http\Controllers\DictionaryControlller;
 
+Route::resource('categories', DictionaryCategoryControlller::class)->except(['show'])->names([
+    'index' => 'categories',
+]);
 
+Route::resource('dictionaries', DictionaryControlller::class)->except(['show'])->names([
+    'index' => 'dictionaries',
+]);
+Route::get('dictionaries/import', [DictionaryControlller::class, 'import'])->name('dictionaries.import');
+Route::post('dictionaries/import', [DictionaryControlller::class, 'importStore'])->name('dictionaries.import.store');
+
+Route::get('/user_dictionaries', [DictionaryControlller::class, 'userView'])->name('user.dictionaries');
 
 // List all districts
 Route::get('/districts', [DistrictController::class, 'allDistricts'])->name('districts_all');

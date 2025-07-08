@@ -394,16 +394,7 @@
                     <span>All Districts.</span>
                 </a>
             </div>
-            <div class="menu-item">
-                <a href="#" class="menu-link menu-toggle">
-                    <i class="fas fa-user-circle"></i>
-                    <span>User Role</span>
-                </a>
-                <div class="submenu">
-                    <a href="#" class="menu-link">Add Role</a>
-                    <a href="#" class="menu-link">View Roles</a>
-                </div>
-            </div>
+            
             <div class="menu-item" style="display:none;">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="fas fa-cog"></i>
@@ -447,7 +438,7 @@
                 </div>
             </div>
             <div class="menu-item">
-                <a href="#" class="menu-link">
+                <a href="/user_dictionaries" class="menu-link">
                     <i class="fas fa-book"></i>
                     <span>Dictionary</span>
                 </a>

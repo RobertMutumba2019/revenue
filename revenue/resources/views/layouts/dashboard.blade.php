@@ -705,6 +705,15 @@
             <span class="icon"><i class="fas fa-user-circle"></i></span> Designations
         </a>
         
+
+        <a href="{{ route('categories') }}" >
+            <span class="icon"><i class="fas fa-user-circle"></i></span> Category
+        </a>
+
+        <a href="{{ route('dictionaries') }}" >
+            <span class="icon"><i class="fas fa-book"></i></span> Dictionary
+        </a>
+
         <a href="/welcome" >
             <span class="icon"><i class="fas fa-home"></i></span> Users Page
         </a>
