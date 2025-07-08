@@ -11,6 +11,24 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DictionaryCategoryControlller;
 use App\Http\Controllers\DictionaryControlller;
+use App\Http\Controllers\GoodsImportController;
+use App\Http\Controllers\GoodsBrowserController;
+use App\Http\Controllers\CommodityController;
+
+Route::resource('commodities', CommodityController::class)->except(['index', 'show', 'create', 'store']);
+
+
+Route::prefix('goods')->group(function () {
+    Route::get('/', [GoodsBrowserController::class, 'index'])->name('goods.index');
+    Route::get('/{segment}', [GoodsBrowserController::class, 'showFamilies'])->name('goods.families');
+    Route::get('/{segment}/{family}', [GoodsBrowserController::class, 'showClasses'])->name('goods.classes');
+    Route::get('/{segment}/{family}/{class}', [GoodsBrowserController::class, 'showCommodities'])->name('goods.commodities');
+});
+
+
+Route::get('/goods_import', [GoodsImportController::class, 'showForm'])->name('goods_import_form');
+Route::post('/goods/import', [GoodsImportController::class, 'import'])->name('goods.import');
+
 
 Route::resource('categories', DictionaryCategoryControlller::class)->except(['show'])->names([
     'index' => 'categories',

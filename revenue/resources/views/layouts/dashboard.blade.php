@@ -696,7 +696,7 @@
 
     <aside class="sidebar" aria-label="Sidebar navigation">
         <a href="/admind" class="@if(Route::is('admind')) active @endif">
-            <span class="icon"><i class="fas fa-tachometer-alt"></i></span> Dashboard
+            <span class="icon"><i class="fa-solid fa-house"></i></span> Dashboard
         </a>
         <button class="dropdown-btn" aria-expanded="false">
             <span><span class="icon"><i class="fas fa-users-cog"></i></span> Manage Users</span>
@@ -725,15 +725,24 @@
         </a>
 
         <a href="/districts" >
-            <span class="icon"><i class="fas fa-home"></i></span> District
+            <span class="icon"><i class="fa-solid fa-earth-americas"></i></span> District
         </a>
 
         <a href="/designations" >
-            <span class="icon"><i class="fas fa-user-circle"></i></span> Designations
+            <span class="icon"><i class="fa-solid fa-user-secret"></i></span> Designations
+        </a>
+
+        
+        <a href="/goods_import" >
+            <span class="icon"><i class="fa-solid fa-globe"></i></span> Goods
+        </a>
+
+        <a href="/goods" >
+            <span class="icon"><i class="fa-solid fa-list"></i></span> List Goods
         </a>
         
         <a href="{{ route('categories') }}" >
-            <span class="icon"><i class="fas fa-user-circle"></i></span> Category
+            <span class="icon"><i class="fa-solid fa-briefcase"></i></span> Category
         </a>
 
         <a href="{{ route('dictionaries') }}" >
